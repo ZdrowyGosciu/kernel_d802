@@ -332,8 +332,12 @@ static void msm_restart_prepare(const char *cmd)
 	if (restart_mode == RESTART_DLOAD)
 		lge_set_restart_reason(LAF_DLOAD_MODE);
 
-	if (in_panic)
+	if (in_panic) {
 		lge_set_panic_reason();
+
+		if (!lge_is_handle_panic_enable())
+			set_dload_mode(0);
+	}
 #endif
 	flush_cache_all();
 	outer_flush_all();
@@ -416,6 +420,14 @@ static int __init msm_restart_init(void)
 	if (scm_is_call_available(SCM_SVC_PWR, SCM_IO_DISABLE_PMIC_ARBITER) > 0)
 		scm_pmic_arbiter_disable_supported = true;
 
+#ifdef CONFIG_LGE_HANDLE_PANIC
+	/* Set default restart_reason to TZ crash.
+	 * If can't be set explicit, it causes by TZ */
+	__raw_writel(LGE_RB_MAGIC | LGE_ERR_TZ, restart_reason);
+
+	if (!lge_is_handle_panic_enable())
+		set_dload_mode(0);
+#endif
 	return 0;
 }
 early_initcall(msm_restart_init);
