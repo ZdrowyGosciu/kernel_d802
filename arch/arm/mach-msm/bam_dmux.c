@@ -1674,7 +1674,7 @@ static int ssrestart_check(void)
 	in_global_reset = 1;
 	ret = subsystem_restart("modem");
 	if (ret == -ENODEV) {
-		DMUX_LOG_KERR("%s: modem subsystem restart failed\n", __func__);
+		PR_BUG("%s: modem subsystem restart failed\n", __func__);
 		dump_stack();
 	}
 	return 1;
