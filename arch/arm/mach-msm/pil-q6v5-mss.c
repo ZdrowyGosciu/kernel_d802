@@ -32,6 +32,9 @@
 #include <mach/msm_smsm.h>
 #include <mach/ramdump.h>
 #include <mach/msm_smem.h>
+#ifdef CONFIG_LGE_HANDLE_PANIC
+#include <mach/lge_handle_panic.h>
+#endif
 
 #include "peripheral-loader.h"
 #include "pil-q6v5.h"
@@ -212,17 +215,12 @@ static void log_modem_sfr(void)
 	strlcpy(reason, smem_reason, min(size, sizeof(reason)));
 	pr_err("modem subsystem failure reason: %s.\n", reason);
 
-#ifdef FEATURE_LGE_MODEM_DEBUG_INFO
-    if (modem_debug.modem_ssr_level != RESET_SOC) {
-        strlcpy(modem_debug.save_ssr_reason, smem_reason, min(size, sizeof(reason)));
-        modem_debug.modem_ssr_event = MODEM_SSR_ERR_FATAL;
-        queue_work(modem_debug.modem_ssr_queue, &modem_debug.modem_ssr_report_work);
-    }
+#ifdef CONFIG_LGE_HANDLE_PANIC
+	lge_check_crash_skiped(reason);
 #endif
 
-    smem_reason[0] = '\0';
-    wmb();
-
+	smem_reason[0] = '\0';
+	wmb();
 }
 
 static void restart_modem(struct modem_data *drv)
