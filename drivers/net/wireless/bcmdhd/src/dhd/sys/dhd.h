@@ -128,8 +128,8 @@ enum dhd_op_flags {
 #endif /* MAX_CNTL_D3ACK_TIMEOUT */
 #endif /* BCMPCIE */
 
-#define DHD_SCAN_ASSOC_ACTIVE_TIME	40 /* ms: Embedded default Active setting from DHD */
-#define DHD_SCAN_UNASSOC_ACTIVE_TIME 70 /* ms: Embedded def. Unassoc Active setting from DHD dafault 80 */
+#define DHD_SCAN_ASSOC_ACTIVE_TIME	20 /* ms: Embedded default Active setting from DHD */
+#define DHD_SCAN_UNASSOC_ACTIVE_TIME 30 /* ms: Embedded def. Unassoc Active setting from DHD dafault 80 */
 #define DHD_SCAN_PASSIVE_TIME		130 /* ms: Embedded default Passive setting from DHD */
 
 #ifndef POWERUP_MAX_RETRY
