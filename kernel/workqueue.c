@@ -1897,7 +1897,6 @@ __acquires(&gcwq->lock)
 		printk(KERN_ERR "    last function: ");
 		print_symbol("%s\n", (unsigned long)f);
 		debug_show_held_locks(current);
-		BUG_ON(PANIC_CORRUPTION);
 		dump_stack();
 	}
 
