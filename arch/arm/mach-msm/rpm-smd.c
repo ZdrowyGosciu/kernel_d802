@@ -1331,6 +1331,8 @@ EXPORT_SYMBOL(msm_rpm_send_message_noirq);
  */
 int msm_rpm_enter_sleep(bool print, const struct cpumask *cpumask)
 {
+	int ret = 0;
+
 	if (standalone)
 		return 0;
 
