@@ -645,6 +645,11 @@ ssize_t store_UV_mV_table(struct cpufreq_policy *policy, char *buf,
 	/* use only master core 0 */
 	int num_levels = cpu_clk[0]->vdd_class->num_levels;
 
+	if (cnt) {
+		cnt = 0;
+		return -EINVAL;
+	}
+
 	/* sanity checks */
 	if (num_levels < 0)
 		return -1;
