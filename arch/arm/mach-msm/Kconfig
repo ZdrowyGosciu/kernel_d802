@@ -1851,6 +1851,17 @@ config MSM_DALRPC_TEST
 	help
 	  Exercises DAL RPC calls to QDSP6.
 
+config ALUCARD_HOTPLUG
+	bool "Enable alucard-hotplug cpu hotplug driver"
+	default n
+	help
+	  Generic Alucard-hotplug cpu hotplug driver for ARM SOCs
+
+config ALUCARD_HOTPLUG_DEFAULT
+        bool "Turn on alucard-hotplug cpu hotplug driver"
+	depends on ALUCARD_HOTPLUG
+        default n
+
 config CPU_VOLTAGE_TABLE
 	bool "Enable CPU Voltage Table via sysfs for adjustements"
 	default y
