@@ -3066,3 +3066,10 @@ config KRAIT_REGULATOR
 	 regulators running in ganged mode inside the PMIC. Enable
 	 this option to support such configurations.
 endif
+
+config MSM_LIMITER
+	bool "MSM Frequency Limiter Driver"
+	default n
+	help
+	  The MSM Frequency Limiter Driver controls max frequency limit for each CPU
+	  to desired value on suspend/resume
