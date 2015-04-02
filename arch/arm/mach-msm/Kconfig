@@ -3063,3 +3063,16 @@ config MSM_LIMITER
 	help
 	  The MSM Frequency Limiter Driver controls max frequency limit for each CPU
 	  to desired value on suspend/resume
+
+config MSM_HOTPLUG
+	bool "MSM hotplug driver"
+	depends on HOTPLUG_CPU
+	default n
+	help
+	  The MSM hotplug driver controls on-/offlining of additional cores based
+	  on current cpu load.
+
+config MSM_HOTPLUG_DEFAULT
+        bool "Turn on MSM hotplug driver"
+        depends on MSM_HOTPLUG
+        default n
