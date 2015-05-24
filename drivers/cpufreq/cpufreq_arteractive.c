@@ -26,6 +26,12 @@
  *           1.2 - Apply Samsung changes from SM-G900F_EUR_LL_Opensource.zip (not included in LG D802 build)
  *           1.3 - Apply upstream patches from https://github.com/android/kernel_common (branch android-3.4)
  *                 (subsystem: CPU FREQUENCY DRIVERS- Set cpu_load calculation on current frequency)
+ *           2.0 - Apply different go_hispeed_load when screen is off (not included in LG D802 build)
+ *                 Apply hispeed boost only on cpu0.
+ *                     Boost in interactive is intended to ramp up the frequency on sudden workload burst,
+ *                     and since most *sudden workload* is single-threaded, boosting up exclusively on cpu0 is quite enough.
+ *                     Rest of the cores can slowly ramp up and match the actual workload.
+ *                     This is not recommended on devices where reducing latency is very important.
  *
  */
 
@@ -694,14 +700,21 @@ static void cpufreq_interactive_timer(unsigned long data)
 #endif
 
 	if (cpu_load >= go_hispeed_load || boosted) {
-		if (pcpu->target_freq < hispeed_freq) {
-			new_freq = hispeed_freq;
-		} else {
-			new_freq = choose_freq(pcpu, loadadjfreq);
-
-			if (new_freq < hispeed_freq)
+		if (pcpu->policy->cpu == 0) {
+			if (pcpu->target_freq < hispeed_freq) {
 				new_freq = hispeed_freq;
+			} else {
+				new_freq = choose_freq(pcpu, loadadjfreq);
+
+				if (new_freq < hispeed_freq)
+					new_freq = hispeed_freq;
+			}
 		}
+#if 0 /* for debugging purpose */
+		  else {
+			pr_info("%s: not boosting up cpu%d\n", __func__, pcpu->policy->cpu);
+		}
+#endif
 	} else {
 		new_freq = choose_freq(pcpu, loadadjfreq);
 
