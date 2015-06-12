@@ -1173,19 +1173,7 @@ MRPROPER_DIRS  += include/config usr/include include/generated          \
                   arch/*/include/generated
 MRPROPER_FILES += .config .config.old .version .old_version             \
                   include/linux/version.h                               \
-		  Module.symvers tags TAGS cscope* GPATH GTAGS GRTAGS GSYMS \
-		  arch/arm/boot/Image arch/arm/boot/compressed/ashldi3.S \
-		  arch/arm/boot/compressed/lib1funcs.S \
-		  arch/arm/boot/compressed/piggy.lz4 arch/arm/boot/compressed/vmlinux \
-		  arch/arm/boot/compressed/vmlinux.lds arch/arm/boot/zImage \
-		  arch/arm/boot/zImage-dtb arch/arm/kernel/vmlinux.lds \
-		  scripts/mod/modpost scripts/selinux/genheaders/genheaders \
-		  scripts/conmakehash scripts/dtc/dtc scripts/genksyms/genksyms \
-		  lib/gen_crc32table scrips/kallsyms scripts/mod/mk_elfconfig \
-		  scripts/selinux/mdp/mdp usr/gen_init_cpio scripts/kallsyms \
-		  usr/initramfs_data.cpio
-
-
+		  Module.symvers tags TAGS cscope* GPATH GTAGS GRTAGS GSYMS
 
 # clean - Delete most, but leave enough to build external modules
 #
