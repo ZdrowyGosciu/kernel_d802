@@ -958,17 +958,8 @@ static int cpufreq_governor_smartmax(struct cpufreq_policy *new_policy,
 
 		mutex_lock(&this_smartmax->timer_mutex);
 		smartmax_update_min_max(this_smartmax,new_policy);
-
-		if (this_smartmax->cur_policy->cur > new_policy->max) {
-			dprintk(SMARTMAX_DEBUG_JUMPS,"CPUFREQ_GOV_LIMITS jumping to new max freq: %d\n",new_policy->max);
-			__cpufreq_driver_target(this_smartmax->cur_policy,
-					new_policy->max, CPUFREQ_RELATION_H);
-		}
-		else if (this_smartmax->cur_policy->cur < new_policy->min) {
-			dprintk(SMARTMAX_DEBUG_JUMPS,"CPUFREQ_GOV_LIMITS jumping to new min freq: %d\n",new_policy->min);
-			__cpufreq_driver_target(this_smartmax->cur_policy,
-					new_policy->min, CPUFREQ_RELATION_L);
-		}
+		__cpufreq_driver_target(this_smartmax->cur_policy,
+					new_policy->cur, CPUFREQ_RELATION_L);
 		mutex_unlock(&this_smartmax->timer_mutex);
 		break;
 
