@@ -242,12 +242,7 @@ enum irqstat_idx {
 	IRQSTAT_NUM	= 6,
 };
 
-#define I2C_SUSPEND_WORKAROUND 1
 #define SMB349_BOOSTBACK_WORKAROUND 1
-
-#ifdef I2C_SUSPEND_WORKAROUND
-extern bool i2c_suspended;
-#endif
 
 #if SMB349_BOOSTBACK_WORKAROUND
 #define DISABLE_CHG_INPUTFET BIT(0)
@@ -330,10 +325,6 @@ struct smb349_struct {
 #if defined(CONFIG_LGE_PM_BATTERY_ID_CHECKER)
 	int batt_id_smem;
 #endif
-#if I2C_SUSPEND_WORKAROUND
-	struct delayed_work		check_suspended_work;
-	int suspended;
-#endif //I2C_SUSPEND_WORKAROUND
 };
 
 #if SMB349_BOOSTBACK_WORKAROUND
@@ -2707,33 +2698,10 @@ static irqreturn_t smb349_irq(int irq, void *dev_id)
 
 	pr_debug("smb349_irq\n");
 
-#if I2C_SUSPEND_WORKAROUND
-	/* I2C transfers API should not run in interrupt context */
-	schedule_delayed_work(&smb349_chg->check_suspended_work, msecs_to_jiffies(100));
-#else
 	schedule_delayed_work(&smb349_chg->irq_work, msecs_to_jiffies(100));
-#endif
+
 	return IRQ_HANDLED;
 }
-
-#if I2C_SUSPEND_WORKAROUND
-static void smb349_check_suspended_worker(struct work_struct *work)
-{
-        struct smb349_struct *smb349_chg =
-                container_of(work, struct smb349_struct, check_suspended_work.work);
-
-        if (smb349_chg->suspended && i2c_suspended)
-	{
-		printk("smb349 suspended. try i2c operation after 100ms.\n");
-		schedule_delayed_work(&smb349_chg->check_suspended_work, msecs_to_jiffies(100));
-	}
-	else
-	{
-		pr_debug("smb349 resumed. do smb349_irq.\n");
-		schedule_delayed_work(&smb349_chg->irq_work, 0);
-	}
-}
-#endif //I2C_SUSPEND_WORKAROUND
 
 static void smb349_polling_worker(struct work_struct *work)
 {
@@ -5019,9 +4987,6 @@ static int __devinit smb349_probe(struct i2c_client *client,
 
 	INIT_DELAYED_WORK(&smb349_chg->irq_work, smb349_irq_worker);
 	INIT_DELAYED_WORK(&smb349_chg->polling_work, smb349_polling_worker);
-#if I2C_SUSPEND_WORKAROUND
-	INIT_DELAYED_WORK(&smb349_chg->check_suspended_work, smb349_check_suspended_worker);
-#endif //I2C_SUSPEND_WORKAROUND
 #ifdef CONFIG_LGE_CHARGER_TEMP_SCENARIO
 	INIT_DELAYED_WORK(&smb349_chg->battemp_work, smb349_monitor_batt_temp);
 #endif
@@ -5298,9 +5263,6 @@ static int smb349_suspend(struct device *dev)
 		cancel_delayed_work_sync(&smb349_chg->bb_rechg_work);
 	}
 #endif
-#if I2C_SUSPEND_WORKAROUND
-	smb349_chg->suspended = 1;
-#endif //I2C_SUSPEND_WORKAROUND
 	return 0;
 }
 
@@ -5322,10 +5284,6 @@ static int smb349_resume(struct device *dev)
 		schedule_delayed_work(&smb349_chg->bb_rechg_work, 0);
 	}
 #endif
-
-#if I2C_SUSPEND_WORKAROUND
-	smb349_chg->suspended = 0;
-#endif //I2C_SUSPEND_WORKAROUND
 	return 0;
 }
 

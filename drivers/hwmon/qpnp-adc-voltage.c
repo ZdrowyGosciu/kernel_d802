@@ -118,13 +118,6 @@
 #define QPNP_ADC_COMPLETION_TIMEOUT				HZ
 #define QPNP_VADC_ERR_COUNT					20
 
-#if defined (CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4)
-#if defined (CONFIG_TOUCHSCREEN_SYNAPTICS_G2) || defined (CONFIG_MACH_MSM8974_TIGERS)
-extern void check_touch_xo_therm(int type);
-int touch_thermal_mode = 0;
-#endif
-#endif
-
 struct qpnp_vadc_chip {
 	struct device			*dev;
 	struct qpnp_adc_drv		*adc;
@@ -1509,57 +1502,11 @@ void xo_therm_logging(void)
 	struct qpnp_vadc_result tmp;
 	int rc = -1;
 
-/* LIMIT: Include ONLY A1, B1, Vu3, Z models used MSM8974 AA/AB */
-#ifdef CONFIG_ADC_READY_CHECK_JB
-	if (qpnp_vadc_is_ready()) {
-		pr_err("vadc is not ready\n");
-		return;
-	}
-
 	rc = qpnp_vadc_read_lge(LR_MUX3_PU2_XO_THERM, &tmp);
+
 	if (rc)
 		pr_err("VADC read error with %d\n", rc);
-	printk(KERN_INFO "[XO_THERM] Result:%lld Raw:%d\n",
-		tmp.physical, tmp.adc_code);
 
-#if defined (CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4)
-#if defined (CONFIG_TOUCHSCREEN_SYNAPTICS_G2) || defined (CONFIG_MACH_MSM8974_TIGERS)
-#define TOUCH_HIGH_TEMPERATURE	50
-#define TOUCH_LOW_TEMPERATURE	47
-			if (touch_thermal_mode == 0 && tmp.physical >= TOUCH_HIGH_TEMPERATURE) {
-				touch_thermal_mode = 1;
-				check_touch_xo_therm(1);
-			} else if (touch_thermal_mode == 1 && tmp.physical < TOUCH_LOW_TEMPERATURE) {
-				touch_thermal_mode = 0;
-				check_touch_xo_therm(0);
-			}
-#endif /*  CONFIG_TOUCHSCREEN_SYNAPTICS_G2 */
-#endif /*  CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 */
-#else
-	if (qpnp_vadc) {
-		rc = qpnp_vadc_read(qpnp_vadc, LR_MUX3_PU2_XO_THERM, &tmp);
-		if (rc)
-			pr_err("VADC read error with %d\n", rc);
-		else {
-			pr_debug("[XO_THERM] Result:%lld Raw:%d\n",
-					tmp.physical, tmp.adc_code);
-#if defined (CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4)
-#if defined (CONFIG_TOUCHSCREEN_SYNAPTICS_G3)
-#define TOUCH_HIGH_TEMPERATURE	55
-#define TOUCH_LOW_TEMPERATURE	52
-			{
-				extern int touch_thermal_status;
-				if (tmp.physical >= TOUCH_HIGH_TEMPERATURE)
-					touch_thermal_status = 1;
-				else if (tmp.physical <= TOUCH_LOW_TEMPERATURE)
-					touch_thermal_status = 0;
-			}
-#endif /*  CONFIG_TOUCHSCREEN_SYNAPTICS_G3 */
-#endif /* CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4  */
-		}
-	} else
-		pr_err("Can't find vadc_chip\n");
-#endif
 }
 #endif
 
