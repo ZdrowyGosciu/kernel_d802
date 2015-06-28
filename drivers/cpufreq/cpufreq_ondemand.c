@@ -1516,7 +1516,8 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 	case CPUFREQ_GOV_LIMITS:
 #ifdef CONFIG_MACH_LGE
 		/* If device is being removed, skip set limits */
-		if (!this_dbs_info->cur_policy)
+		if (!this_dbs_info->cur_policy
+			 || !policy->cur)
 			break;
 #endif
 		mutex_lock(&this_dbs_info->timer_mutex);
