@@ -616,7 +616,7 @@ _kgsl_sharedmem_page_alloc(struct kgsl_memdesc *memdesc,
 			struct kgsl_pagetable *pagetable,
 			size_t size)
 {
-	int pcount = 0, order, ret = 0;
+	int pcount = 0, ret = 0;
 	int j, len, page_size, sglen_alloc, sglen = 0;
 	struct page **pages = NULL;
 	pgprot_t page_prot = pgprot_writecombine(PAGE_KERNEL);
