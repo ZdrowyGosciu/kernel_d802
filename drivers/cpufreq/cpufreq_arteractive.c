@@ -643,7 +643,7 @@ static void cpufreq_interactive_timer(unsigned long data)
 	int cpu_load;
 	struct cpufreq_interactive_cpuinfo *pcpu =
 		&per_cpu(cpuinfo, data);
-	unsigned int new_freq;
+	unsigned int new_freq = 0;
 	unsigned int loadadjfreq;
 	unsigned int index;
 	unsigned long flags;
