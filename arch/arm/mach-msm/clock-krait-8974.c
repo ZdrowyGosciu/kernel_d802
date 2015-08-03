@@ -641,7 +641,7 @@ ssize_t store_UV_mV_table(struct cpufreq_policy *policy, char *buf,
 	int ret = 0;
 	unsigned int val;
 	/* freq step number */
-	char size_cur[15];
+	char size_cur[14];
 	/* use only master core 0 */
 	int num_levels = cpu_clk[0]->vdd_class->num_levels;
 
