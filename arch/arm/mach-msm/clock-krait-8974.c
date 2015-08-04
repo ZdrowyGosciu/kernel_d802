@@ -23,7 +23,7 @@
 #include <linux/cpumask.h>
 
 #ifdef CONFIG_CPU_VOLTAGE_TABLE
-#define UV_INTERFACE_VERSION 1.1
+#define UV_INTERFACE_VERSION 1.11
 #include <linux/cpufreq.h>
 #endif
 
@@ -609,11 +609,6 @@ ssize_t show_UV_mV_table(struct cpufreq_policy *policy, char *buf)
 	int i, freq, len = 0;
 	/* use only master core 0 */
 	int num_levels = cpu_clk[0]->vdd_class->num_levels;
-
-	if (cnt) {
-		cnt = 0;
-		return -EINVAL;
-	}
 
 	/* sanity checks */
 	if (num_levels < 0)
