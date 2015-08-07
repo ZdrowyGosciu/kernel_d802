@@ -678,10 +678,10 @@ static void cpufreq_interactive_timer(unsigned long data)
 	if (new_mode != mode) {
 		mode = new_mode;
 		if (new_mode & MULTI_MODE || new_mode & SINGLE_MODE) {
-			pr_info("Governor: enter mode 0x%x\n", mode);
+			pr_debug("Governor: enter mode 0x%x\n", mode);
 			enter_mode();
 		} else {
-			pr_info("Governor: exit mode 0x%x\n", mode);
+			pr_debug("Governor: exit mode 0x%x\n", mode);
 			exit_mode();
 		}
 	}
