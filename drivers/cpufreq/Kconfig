@@ -128,6 +128,10 @@ config CPU_FREQ_DEFAULT_GOV_ARTERACTIVE
 	  loading your cpufreq low-level hardware driver, using the
 	  'arteractive' governor for latency-sensitive workloads.
 
+config CPU_FREQ_DEFAULT_GOV_IMPULSE
+	bool "impulse"
+	select CPU_FREQ_GOV_IMPULSE
+
 endchoice
 
 config CPU_FREQ_GOV_DANCEDANCE
@@ -198,6 +202,12 @@ config CPU_FREQ_GOV_SMARTMAX
 config CPU_FREQ_GOV_SMARTMAX_MSM8974
 	bool "'smartmax' defaults for msm8974 soc"
 	depends on CPU_FREQ_GOV_SMARTMAX
+
+config CPU_FREQ_GOV_IMPULSE
+	tristate "'impulse' cpufreq policy governor"
+	help
+	  'impulse' - This driver adds a dynamic cpufreq policy governor
+	  designed for optimized balance between power and performance.
 
 config CPU_FREQ_GOV_INTERACTIVE
 	tristate "'interactive' cpufreq policy governor"
