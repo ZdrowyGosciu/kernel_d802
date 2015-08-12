@@ -114,10 +114,6 @@ config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	  you to get a full dynamic cpu frequency capable system by simply
 	  loading your cpufreq low-level hardware driver, using the
 	  'interactive' governor for latency-sensitive workloads.
-	  
-config CPU_FREQ_DEFAULT_GOV_DANCEDANCE
-	bool "DanceDance"
-	select CPU_FREQ_GOV_DANCEDANCE
 
 config CPU_FREQ_DEFAULT_GOV_ARTERACTIVE
 	bool "arteractive"
@@ -133,10 +129,6 @@ config CPU_FREQ_DEFAULT_GOV_IMPULSE
 	select CPU_FREQ_GOV_IMPULSE
 
 endchoice
-
-config CPU_FREQ_GOV_DANCEDANCE
-	tristate "'DanceDance' governor"
-	help
 
 config CPU_FREQ_GOV_PERFORMANCE
 	tristate "'performance' governor"
