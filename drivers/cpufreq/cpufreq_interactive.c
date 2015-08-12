@@ -1511,7 +1511,7 @@ static int cpufreq_governor_interactive(struct cpufreq_policy *policy,
 		break;
 
 	case CPUFREQ_GOV_LIMITS:
-		if (policy->cur == NULL)
+		if (!policy->cur)
 			break;
 
 		if (policy->max < policy->cur)

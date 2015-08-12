@@ -1343,7 +1343,7 @@ static int cpufreq_governor_impulse(struct cpufreq_policy *policy,
 
 	case CPUFREQ_GOV_LIMITS:
 		/* If device is being removed, skip set limits */
-		if (policy->cur == NULL)
+		if (!policy->cur)
 			break;
 
 		if (policy->max < policy->cur)
