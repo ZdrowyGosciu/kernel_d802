@@ -957,7 +957,7 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 	}
 
 	/* calculate the scaled load across CPU */
-	load_at_max_freq = (cur_load * policy->cur)/policy->cpuinfo.max_freq;
+	load_at_max_freq = (cur_load * policy->cur)/policy->max;
 
 	cpufreq_notify_utilization(policy, load_at_max_freq);
 #if defined(CONFIG_MACH_MSM8974_B1_KR) || defined(CONFIG_MACH_MSM8974_B1W)

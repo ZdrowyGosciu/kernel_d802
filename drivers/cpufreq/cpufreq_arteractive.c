@@ -476,11 +476,11 @@ static u64 update_load(int cpu)
 #endif
 #ifdef CONFIG_SEC_PM
 	pcpu->policy->load_at_max = (cur_load * pcpu->policy->cur) /
-		pcpu->policy->cpuinfo.max_freq;
+		pcpu->policy->max;
 #endif
 #ifdef CONFIG_MODE_AUTO_CHANGE
 	cur_loadinfo->load = (cur_load * pcpu->policy->cur) /
-									pcpu->policy->cpuinfo.max_freq;
+									pcpu->policy->max;
 	cur_loadinfo->freq = pcpu->policy->cur;
 	cur_loadinfo->timestamp = now;
 #endif

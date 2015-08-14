@@ -246,7 +246,7 @@ static unsigned int choose_freq_grid(
 	int freq_div = 0;
 	int index = 0;
 
-	load_at_max_freq = cpu_load * freq / pcpu->policy->cpuinfo.max_freq;
+	load_at_max_freq = cpu_load * freq / pcpu->policy->max;
 
 	if(load_at_max_freq > high_grid_load){
 		freq_div = (pcpu->policy->max *high_grid_step) / 100;
