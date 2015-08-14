@@ -51,7 +51,7 @@
 #include <linux/kernel_stat.h>
 #include <asm/cputime.h>
 
-#undef CONFIG_MODE_AUTO_CHANGE
+#define CONFIG_MODE_AUTO_CHANGE
 
 /*
  * Governor-side implemented Touchboost by Paul Reioux(faux123)
